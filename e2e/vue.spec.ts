@@ -20,20 +20,29 @@ test('I can navigate to the test page', async ({ page }) => {
    *    Then I am redirected to "/tests"
    *    And I see "Form" as the page title
    */
-  // TODO: implement
+  await page.goto('/')
+  await page.getByRole('button').click()
+  await page.locator('.q-item[href="/tests"]').click()
+  await expect(page).toHaveURL(/\/tests$/)
+  await expect(page.locator('.text-h4')).toHaveText('Form')
 })
 
-test('I cannot submit an empty form', async () => {
+test('I cannot submit an empty form', async ({ page }) => {
   /** Scenario:
    *    Given I am on the "Tests" page
    *    When I click on the "Submit" button
    *    Then I am still on the "Tests" page
    *    And I see an error saying "Please type something"
    */
-  // TODO: implement
+  await page.goto('/tests')
+  await page.locator('.q-btn[type="submit"]').click()
+  await expect(page).toHaveURL(/\/tests$/)
+  await expect(page.locator('.q-field__messages div[role="alert"]')).toHaveText(
+    'Please type something'
+  )
 })
 
-test('I can submit a filled form', async () => {
+test('I can submit a filled form', async ({ page }) => {
   /** Scenario:
    *    Given I am on the "Tests" page
    *    When I type "John Doe" on the "name" input
@@ -49,10 +58,22 @@ test('I can submit a filled form', async () => {
    *    And I see "This is an about me info" as the given "about"
    *    And I see 5 full stars
    */
-  // TODO: implement
+  await page.goto('/tests')
+  await page.locator('.q-field__native[aria-label="Your name *"]').fill('John Doe')
+  await page.locator('.q-field__native[aria-label="Your age *"]').fill('22')
+  await page.locator('.q-field__native[aria-label="About you"]').fill('This is an about me info')
+  await page.click('.q-toggle')
+  await page.click('.q-btn[type="submit"]')
+  await expect(page).toHaveURL(/\/tests\/summary$/)
+  await expect(page.locator('.text-bold.text-body1.name')).toHaveText('John')
+  await expect(page.locator('.text-bold.text-body1.surname')).toHaveText('Doe')
+  await expect(page.locator('.text-bold.text-body1.age')).toHaveText('22')
+  await expect(page.locator('.terms')).toHaveText('You accepted the licence and terms conditions')
+  await expect(page.locator('.about')).toHaveText('"This is an about me info"')
+  await expect(page.locator('.q-icon').filter({ hasText: /^star\s*$/ })).toHaveCount(5)
 })
 
-test('I can submit a partially filled form', async () => {
+test('I can submit a partially filled form', async ({ page }) => {
   /** Scenario:
    *    Given I am on the "Tests" page
    *    When I type "John" on the "name" input
@@ -65,5 +86,14 @@ test('I can submit a partially filled form', async () => {
    *    And I see 1 full stars
    *    And I see 3 empty stars
    */
-  //  TODO: implement
+  await page.goto('/tests')
+  await page.locator('.q-field__native[aria-label="Your name *"]').fill('John')
+  await page.locator('.q-field__native[aria-label="Your age *"]').fill('11')
+  await page.click('.q-btn[type="submit"]')
+  await expect(page).toHaveURL(/\/tests\/summary$/)
+  await expect(page.locator('.text-bold.text-body1.name')).toHaveText('John')
+  await expect(page.locator('.text-bold.text-body1.age')).toHaveText('11')
+  await expect(page.locator('.about')).toHaveText('You did not write about you')
+  await expect(page.locator('.q-icon').filter({ hasText: /^star\s*$/ })).toHaveCount(1)
+  await expect(page.locator('.q-icon').filter({ hasText: /^star_outline\s*$/ })).toHaveCount(3)
 })

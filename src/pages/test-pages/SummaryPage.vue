@@ -5,9 +5,8 @@
       <q-item>
         <q-item-section>
           <q-item-label>Your name</q-item-label>
-          <q-item-label caption lines="2"
-            >You gave the name <span class="text-bold text-body1">{{ name }}</span></q-item-label
-          >
+          <q-item-label caption lines="2">You gave the name <span class="text-bold text-body1 name">{{ name
+              }}</span></q-item-label>
         </q-item-section>
 
         <q-item-section side top>
@@ -21,10 +20,8 @@
         <q-item>
           <q-item-section>
             <q-item-label>Your surname</q-item-label>
-            <q-item-label caption lines="2"
-              >You gave the name
-              <span class="text-bold text-body1">{{ surname }}</span></q-item-label
-            >
+            <q-item-label caption lines="2">You gave the name
+              <span class="text-bold text-body1 surname">{{ surname }}</span></q-item-label>
           </q-item-section>
 
           <q-item-section side top>
@@ -38,9 +35,8 @@
       <q-item>
         <q-item-section>
           <q-item-label>About </q-item-label>
-          <q-item-label caption lines="2"
-            >You are aged <span class="text-bold text-body1">{{ form.age }}</span></q-item-label
-          >
+          <q-item-label caption lines="2">You are aged <span class="text-bold text-body1 age">{{ form.age
+              }}</span></q-item-label>
         </q-item-section>
 
         <q-item-section side top>
@@ -53,7 +49,7 @@
       <q-item>
         <q-item-section>
           <q-item-label>Licence and terms</q-item-label>
-          <q-item-label caption lines="2">
+          <q-item-label caption lines="2" class="terms">
             You <span v-if="!form.accept">did not accept</span><span v-else>accepted</span>
             the licence and terms conditions
           </q-item-label>
@@ -73,12 +69,12 @@
             <q-item-label caption lines="2">You wrote about you:</q-item-label>
             <q-item-label class="quote text-body2">
               <blockquote>
-                <p>"{{ form.about }}"</p>
+                <p class="about">"{{ form.about }}"</p>
                 <cite>{{ form.fullName }}</cite>
               </blockquote>
             </q-item-label>
           </template>
-          <q-item-label v-else caption lines="2">You did not write about you</q-item-label>
+          <q-item-label v-else caption lines="2" class="about">You did not write about you</q-item-label>
         </q-item-section>
 
         <q-item-section side top>
@@ -117,12 +113,14 @@ const isMajor = computed(() => {
   display: inline-block;
   margin: 1em;
   overflow: hidden;
+
   blockquote {
     border: solid 2px #757575;
     display: inline-block;
     margin: 0;
     padding: 1em;
     position: relative;
+
     &:before {
       bottom: -10%;
       content: '';
@@ -132,15 +130,18 @@ const isMajor = computed(() => {
       top: -10%;
       transform: rotate(-15deg) skew(5deg);
     }
+
     cite {
       display: block;
       font-style: italic;
       text-align: right;
+
       &:before {
         content: '- ';
       }
     }
-    > * {
+
+    >* {
       position: relative;
       z-index: 1;
     }
