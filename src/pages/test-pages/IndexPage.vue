@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <div class="text-h4">Form</div>
+    <div data-testid="title" class="text-h4">Form</div>
     <div class="q-py-md" style="max-width: 400px">
       <q-form ref="inputForm" @submit="onSubmit" @reset="onReset" class="q-gutter-md">
         <q-input
